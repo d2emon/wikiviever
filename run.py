@@ -37,7 +37,6 @@ play = True
 while play:
     patharr = [path] + wikipath
     print(patharr)
-    # patharr.append(subdir)
     p = os.path.join(*patharr)
     subs = load_subpages(p)
     a = print_menu(p, subs)
@@ -47,6 +46,8 @@ while play:
         try:
             i = int(a) - 1
             if i < 0:
+                if not wikipath:
+                    raise ValueError
                 subdir = '..'
                 wikipath.pop()
             else:
