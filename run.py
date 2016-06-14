@@ -1,27 +1,28 @@
 #! /usr/bin/python3.5
 
-import sys
-import os
 import config
+import wiki
 
-def load_subpages(path):
-    try:
-        subs = next(os.walk(path))[1]
-    except StopIteration:
-        subs = []
-    subs = list(filter(lambda f: not f.startswith('.') and not f.startswith('_'), subs))
-    subs.sort()
+def subpages(w):
+    subs = ""
+    for i, f in enumerate(w.items):
+        subs += "{}.\t{}\n".format(i + 1, f)
     return subs
 
-def print_subpages(subs):
-    for i, f in enumerate(subs):
-        print("{}.\t{}".format(i + 1, f))
+def print_subpages(w):
+    print(subpages(w))
 
-def print_menu(path, subs):
-    print("Path: {}".format(path))
+def print_path(p):
+    print("Path: {}".format(p))
+    print("----")
+
+def print_text(text):
+    print(text)
+
+def print_menu(w):
     print("----")
     print("0.\t..")
-    print_subpages(subs)
+    print_subpages(w)
     print("----")
     print("Q.\tExit")
     print("----")
@@ -29,51 +30,24 @@ def print_menu(path, subs):
     print("----")
     return i.lower()
 
-path = config.path
-wikipath = []
 subdir = ""
 
 play = True
+w = wiki.Wiki(config.path)
 while play:
-    patharr = [path] + wikipath
-    print(patharr)
-    p = os.path.join(*patharr)
+    w.load()
 
-    subs = load_subpages(p)
-    optfile = os.path.join(p, "__page.opt")
-    textfile = os.path.join(p, "__page.text")
-    if os.path.isfile(optfile):
-        f = open(optfile, "r")
-        opt = f.read()
-    else:
-        opt = "No 'opt' file"
-    if os.path.isfile(textfile):
-        f = open(textfile, "r")
-        text = f.read()
-    else:
-        text = "No 'text' file"
-    print(opt)
-    print(text)
+    print_path(w.filepath())
+    print_text(w.text)
+    a = print_menu(w)
 
-    a = print_menu(p, subs)
-    if a.lower().startswith('q'):
+    if a.startswith('q'):
         play = False
     else:
         try:
             i = int(a) - 1
-            if i < 0:
-                if not wikipath:
-                    raise ValueError
-                subdir = '..'
-                wikipath.pop()
-            else:
-                try:
-                    subdir = subs[i]
-                except IndexError:
-                    raise ValueError
-                wikipath.append(subdir)
-                print(p)
-            print(subdir)
-        except ValueError:
+            if not w.subitem(i):
+                raise ValueError
+        except (IndexError, ValueError):
             print("Wrong selection")
 print("Bye!")
