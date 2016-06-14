@@ -27,7 +27,7 @@ def print_menu(path, subs):
     print("----")
     i = input("Your selection:\t")
     print("----")
-    return i
+    return i.lower()
 
 path = config.path
 wikipath = []
@@ -38,7 +38,23 @@ while play:
     patharr = [path] + wikipath
     print(patharr)
     p = os.path.join(*patharr)
+
     subs = load_subpages(p)
+    optfile = os.path.join(p, "__page.opt")
+    textfile = os.path.join(p, "__page.text")
+    if os.path.isfile(optfile):
+        f = open(optfile, "r")
+        opt = f.read()
+    else:
+        opt = "No 'opt' file"
+    if os.path.isfile(textfile):
+        f = open(textfile, "r")
+        text = f.read()
+    else:
+        text = "No 'text' file"
+    print(opt)
+    print(text)
+
     a = print_menu(p, subs)
     if a.lower().startswith('q'):
         play = False
