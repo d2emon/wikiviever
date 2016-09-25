@@ -1,2 +1,2 @@
 import os
-path = os.getcwd() + "/wiki"
+path = os.getcwd() + "/db/wiki"
