@@ -34,9 +34,6 @@
   <div>
   {{ wiki.path }}
   </div>
-  <div style="border: solid 1px #000000">
-  {{ wiki.opt | linebreaks }}
-  </div>
   {% if wiki.text %}
   <div style="border: solid 1px #000000">
   {{ wiki.text | linebreaks }}
@@ -44,7 +41,7 @@
   {% endif %}
   {% if wiki.html %}
   <div style="border: solid 1px #000000">
-  {{ wiki.html | safe }}
+  {{ wiki.get_html | safe }}
   </div>
   {% endif %}
 </div>

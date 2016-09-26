@@ -2,6 +2,7 @@
 import os
 import logging
 import configparser
+import re
 
 
 class WikiLink():
@@ -50,12 +51,13 @@ class WikiPage():
         # self.content = load_wiki(path, attach="{}{}__attach/".format(self.attach, subpath))
 
     def load_file(self, filename):
-        filename = self.get_filepath(filename)
-        if not os.path.isfile(filename):
-            return False
-        f = open(filename, "r")
-        data = f.read()
-        return data
+        try:
+            filename = self.get_filepath(filename)
+            if not os.path.isfile(filename):
+                return False
+            return open(filename, "r").read()
+        except FileNotFoundError:
+            return None
 
     def get_filepath(self, filename=""):
         return os.path.join(os.path.normpath(self.root), self.subpath, filename)
@@ -79,3 +81,18 @@ class WikiPage():
 
     def get_children_array(self):
         return [WikiLink(c, self.subpath) for c in self.get_children()]
+
+    def get_html(self, href=None, attach=None):
+        href = r"/wiki/{}\1/__page.wiki".format(self.subpath)
+        attach = r"/static/wiki/{}__attach/".format(self.subpath)
+
+        found = re.search(r'<body>(.*)</body>', self.html, re.DOTALL)
+        if not found:
+            return _("Wiki {} not found. File {} is not exists.".format(self.get_filepath()))
+
+        text = found.group(1)
+        if href:
+            text = re.sub(r'href="(.*?)"', r'href="{}"'.format(href), text)
+        if attach:
+            text = re.sub(r'="__attach/(.*?)"', r'="{}\1"'.format(attach), text)
+        return text
