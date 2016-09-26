@@ -1,0 +1,52 @@
+<html>
+<head>
+<title>{{ wiki.get_title }}</title>
+</head>
+<body>
+<h1>{{ wiki.get_title }}</h1>
+<div>
+  <ul>
+    <li><a href="{% url "wikiroot" %}">Wiki</a></li>
+    {% for crumb in crumbs %}
+    <li><a href="{% url "wiki" crumb.path %}">{{ crumb.title }}</a></li>
+    {% endfor %}
+  </ul>
+  <div>
+  {{ crumbs }}
+  </div>
+  <div>
+  {{ children }}
+  </div>
+  <div>
+  Root: {{ wiki.root }}
+  </div>
+  <div>
+  Subpath: {{ wiki.subpath }}
+  </div>
+  <ul>
+    {% if wiki.subpath %}
+    <li><a href="{%url "wiki" wiki.get_upper %}">..</a></li>
+    {% endif %}
+    {% for link in wiki.children %}
+    <li><a href="{% url "wiki" link.path %}">{{ link.title }}</a></li>
+    {% endfor %}
+  </ul>
+  <div>
+  {{ wiki.path }}
+  </div>
+  <div style="border: solid 1px #000000">
+  {{ wiki.opt | linebreaks }}
+  </div>
+  {% if wiki.text %}
+  <div style="border: solid 1px #000000">
+  {{ wiki.text | linebreaks }}
+  </div>
+  {% endif %}
+  {% if wiki.html %}
+  <div style="border: solid 1px #000000">
+  {{ wiki.html | safe }}
+  </div>
+  {% endif %}
+</div>
+</body>
+</html>
