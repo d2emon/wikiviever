@@ -30,11 +30,9 @@ class PageView(TemplateView):
         while p:
             old = p
             p, crumb = os.path.split(os.path.normpath(p))
-            crumbs.append(WikiLink(crumb, p))  # {'title': crumb, 'path': old})
-        print(crumbs)
+            crumbs.append(WikiLink(crumb, p))
         crumbs.reverse()
         crumbs.pop()
-        print(crumbs)
 
         w = WikiPage(root=self.path)
         w.load(path=subpath)
@@ -43,6 +41,10 @@ class PageView(TemplateView):
         context['crumbs'] = crumbs
         context['wiki'] = w
         return context
+
+
+class HtmlView(PageView):
+    template_name = 'wiki/html.html'
 
 
 class AttachView(RedirectView):
