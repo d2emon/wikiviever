@@ -1,0 +1,5 @@
+Django==1.10.1
+django-bootstrap-breadcrumbs==0.8
+pkg-resources==0.0.0
+six==1.10.0
+-e git://github.com/d2emon/wikifiles.git@4e8735b507e77c46e834a2349882afa7617d91f2#egg=wikifiles
