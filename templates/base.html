@@ -3,12 +3,10 @@
     <head>
         <!-- {{STATIC_URL}} -->
         <meta charset="utf-8" />
-        <title>{% block title %}Newspaperizer{% endblock %}</title>
-        <link href="{% static "/favicon.ico" %}" rel="icon" type="image/ico">
+        <title>{% block title %}{% trans "Wiki" %}{% endblock %}</title>
+        <link href="{% block favicon %}{% static "/favicon.ico" %}{% endblock %}" rel="icon" type="image/ico">
         <link href="{% static "/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
         <link href="{% static "/css/main.css" %}" rel="stylesheet">
-        <style>
-        </style>
         <link href="{% static "/bootstrap/css/bootstrap-responsive.css" %}" rel="stylesheet">
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -27,47 +25,26 @@
     </head>
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-    	<div class="navbar-header">
-	        <div class="navbar-brand">Newspaperizer</div>
-    	</div>
-	    <div class="navbar-collapse collapse">
-	    	<ul class="nav navbar-nav">
-          <li><a href="{% url "index" %}" class="">{% trans "Home" %}</a></li>
-          <li><a href="{% url "wiki" "" %}" class="">{% trans "Wiki" %}</a></li>
-          <li><a href="{% url "worlds" %}" class="">{% trans "Worlds" %}</a></li>
-          <li><a href="{% url "newspapers" %}" class="">{% trans "Newspapers" %}</a></li>
-          <li><a href="{% url "admin:index" %}" class="">{% trans "Admin" %}</a></li>
-	    		{% block menu %}{% endblock %}
-	    	</ul>
-	    </div>
-    </div>
-</div>
-
 <div class="container">
 
 	<div>
-		{% block breadcrumbs %}
-		{% breadcrumb "Home" "index" %}	
-		{% endblock %}
-		{% render_breadcrumbs %}
-		
 		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 		<div class="jumbotron">
 		    {% block pagehead %}
 			<div class="container">
-        <h1>{% trans "Wellcome to Newspaperizer" %}</h1>
+        <h1>{% trans "Wellcome to Wiki" %}</h1>
 			</div>
 			{% endblock %}
 		</div>
+
+		{% block breadcrumbs %}
+		{% breadcrumb "Wiki" "wikiroot" %}	
+		{% endblock %}
+		{% render_breadcrumbs %}
+		
 		<div class="container">
-		    {% block content %}
-		    <h2>Contents:</h2>
-			<ul>
-        <li><a href="{% url "newspapers" %}">{% trans "Newspapers" %}</a></li>
-          <li><a href="{% url "admin:index" %}">{% trans "Admin" %}</a></li>
-			</ul>
+		  {% block content %}
+      <div>Wiki is empty</div>
 			{% endblock %}
 		</div>
 	</div> 
